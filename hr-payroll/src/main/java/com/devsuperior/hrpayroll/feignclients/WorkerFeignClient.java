@@ -7,7 +7,7 @@ import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
 
 @Component
-@FeignClient(name = "hr-worker", url = "localhost:8001", path = "/workers")
+@FeignClient(name = "hr-worker", path = "/workers")
 public interface WorkerFeignClient {
 
   @GetMapping("/{id}")
