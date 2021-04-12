@@ -4,6 +4,7 @@ import com.devsuperior.hrworker.entities.*;
 import com.devsuperior.hrworker.repositories.*;
 import lombok.extern.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.cloud.context.config.annotation.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/workers")
 @Slf4j
+@RefreshScope
 public class WorkerResource {
 
   @Autowired private WorkerRepository repository;
