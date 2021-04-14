@@ -25,3 +25,7 @@ spring:
           uri: lb://HR-USER
           predicates:
             - Path=/users/**
+        - id: hr-oauth
+          uri: lb://HR-OAUTH
+          predicates:
+            - Path=/oauth/users/**

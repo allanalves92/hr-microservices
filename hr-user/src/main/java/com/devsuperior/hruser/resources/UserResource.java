@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.*;
+
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
@@ -20,7 +22,8 @@ public class UserResource {
 
   @GetMapping(value = "/search")
   public ResponseEntity<User> findByEmail(@RequestParam String email) {
-    User obj = repository.findByEmail(email).get();
-    return ResponseEntity.ok(obj);
+    Optional<User> obj = repository.findByEmail(email);
+    User user = obj.isPresent() ? obj.get() : null;
+    return ResponseEntity.ok(user);
   }
 }

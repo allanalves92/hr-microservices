@@ -3,7 +3,9 @@ package com.devsuperior.hroauth;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.cloud.netflix.eureka.*;
+import org.springframework.cloud.openfeign.*;
 
+@EnableFeignClients
 @EnableEurekaClient
 @SpringBootApplication
 public class HrOauthApplication {
