@@ -1,28 +1,32 @@
 package com.devsuperior.hrpayroll.resources;
 
-import com.devsuperior.hrpayroll.entities.*;
-import com.devsuperior.hrpayroll.services.*;
-import io.github.resilience4j.circuitbreaker.annotation.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.devsuperior.hrpayroll.entities.Payment;
+import com.devsuperior.hrpayroll.services.PaymentService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
-@RequestMapping("/payments")
+@RequestMapping(value = "/payments")
 public class PaymentResource {
 
-  @Autowired private PaymentService paymentService;
-
-  @CircuitBreaker(name = "getPayment", fallbackMethod = "getPaymentAlternative")
-  @GetMapping("/{workerId}/days/{days}")
-  public ResponseEntity<Payment> getPayment(
-      @PathVariable Long workerId, @PathVariable Integer days) {
-    Payment payment = paymentService.getPayment(workerId, days);
-    return ResponseEntity.ok(payment);
-  }
-
-  private ResponseEntity<Payment> getPaymentAlternative(Throwable t) {
-    Payment payment = new Payment("Bran", 400.00, 2);
-    return ResponseEntity.ok(payment);
-  }
+	@Autowired
+	private PaymentService service;
+	
+	@HystrixCommand(fallbackMethod = "getPaymentAlternative")
+	@GetMapping(value = "/{workerId}/days/{days}")
+	public ResponseEntity<Payment> getPayment(@PathVariable Long workerId, @PathVariable Integer days) {
+		Payment payment = service.getPayment(workerId, days);
+		return ResponseEntity.ok(payment);
+	}	
+	
+	public ResponseEntity<Payment> getPaymentAlternative(Long workerId, Integer days) {
+		Payment payment = new Payment("Brann", 400.0, days);
+		return ResponseEntity.ok(payment);
+	}
 }
